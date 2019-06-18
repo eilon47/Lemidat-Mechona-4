@@ -32,7 +32,7 @@ def load_dataset(fname, dataset_params, loader_params, is_test=False):
 def load_all(train, train_param, valid, valid_params, test, test_params):
     train_l = load_dataset(train, train_param[0], train_param[1])
     valid_l = load_dataset(valid, valid_params[0], valid_params[1])
-    test_l = load_dataset(test, test_params[0], test_params[1])
+    test_l = load_dataset(test, test_params[0], test_params[1], is_test=True)
     return train_l, valid_l, test_l
 
 
