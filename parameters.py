@@ -33,6 +33,7 @@ EPOCHS = 1
 LEARNING_RATE = 0.001
 MOMENTUM = 0.9
 OPTIMIZER = "adam"
+DROPOUT = 0.3
 
 loader_params = {
     "batch_size": BATCH_SIZE,
