@@ -65,7 +65,7 @@ def main():
                     best_model = None
                     best_valid_loss = np.inf
                     best_valid_acc = - np.inf
-                    for epoch in range(EPOCHS):
+                    for epoch in range(E):
                         valid_loss, valid_acc = epoch_routine(train, valid, model, optimizer, epoch, CUDA)
                         if best_valid_loss >= valid_loss and valid_acc >= best_valid_acc:
                             print("Found better model with loss {} and accuracy {}% on validation set".format(valid_loss, valid_acc))
