@@ -49,9 +49,9 @@ def train_routine(loader, model, optimizer, epoch, cuda):
         print_progress_bar(exmaples_so_far, len(loader.dataset), prefix="Progress in Epoch {}".format(epoch),
                          suffix="Complete")
 
-        if (exmaples_so_far) % 900 == 0:
-            print('\nTrain::Epoch::{}:\t{} Examples of {} - ({:.0f}%)\tLoss: {:.6f}'.format(
-                        epoch, exmaples_so_far, total_examples, 100.0* batch_index / total_examples, loss.item()))
+        # if (exmaples_so_far) % 900 == 0:
+        #     print('\nTrain::Epoch::{}:\t{} Examples of {} - ({:.0f}%)\tLoss: {:.6f}'.format(
+        #                 epoch, exmaples_so_far, total_examples, 100.0* batch_index / total_examples, loss.item()))
     return float(total_loss / len(loader.dataset))
 
 

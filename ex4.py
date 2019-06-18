@@ -6,6 +6,7 @@ import torch
 from gcommand_loader import GCommandLoader, GCommandTestLoader
 from model import NNModel
 import torch.optim as optim
+from google.colab import files
 
 
 def load_dataset(fname, dataset_params, loader_params, is_test=False):
@@ -53,16 +54,27 @@ def get_model_and_optimizer(optimizer_type, lr, momentum, cuda):
 
 def main():
     train, valid, test = load_all(TRAIN_PATH, [dataset_params, loader_params], VALID_PATH, [dataset_params, loader_params], TEST_PATH, [test_dataset_params, test_loader_params])
-    model, optimizer = get_model_and_optimizer(OPTIMIZER, LEARNING_RATE, MOMENTUM, CUDA)
-    best_model = None
-    best_valid_loss = np.inf
-    best_valid_acc = - np.inf
-    for epoch in range(EPOCHS):
-        valid_loss, valid_acc = epoch_routine(train, valid, model, optimizer, epoch, CUDA)
-        if best_valid_loss >= valid_loss and valid_acc >= best_valid_acc:
-            print("Found better model with loss {} and accuracy {}% on validation set".format(valid_loss, valid_acc))
-            best_model = copy.deepcopy(model)
-    test_routine(test, best_model, CUDA)
+    fd = open("output.txt", 'w')
+    for E in EPOCHS:
+        for LR in LEARNING_RATE:
+            for O in OPTIMIZER:
+                for M in MOMENTUM:
+                    for D in DROPOUT:
+                        model, optimizer = get_model_and_optimizer(OPTIMIZER, LEARNING_RATE, MOMENTUM, CUDA)
+                        best_model = None
+                        best_valid_loss = np.inf
+                        best_valid_acc = - np.inf
+                        for epoch in range(EPOCHS):
+                            valid_loss, valid_acc = epoch_routine(train, valid, model, optimizer, epoch, CUDA)
+                            if best_valid_loss >= valid_loss and valid_acc >= best_valid_acc:
+                                print("Found better model with loss {} and accuracy {}% on validation set".format(valid_loss, valid_acc))
+                                best_model = copy.deepcopy(model)
+                        fd.write("{}_{}_{}_{}_{}_{}\n".format(best_valid_acc, E, LR, O, M, D))
+                        test_routine(test, best_model, CUDA, fname="{}_{}_{}_{}_{}_{}".format(best_valid_acc, E, LR, O, M, D))
+                        files.download("{}_{}_{}_{}_{}_{}".format(best_valid_acc, E, LR, O, M, D))
+    fd.close()
+    files.download("output.txt")
+
 
 if __name__ == '__main__':
     main()

@@ -19,7 +19,7 @@ SEED = 1234
 #  LOADER
 BATCH_SIZE = 100
 BATCH_SIZE_FOR_TEST = 1
-NUM_OF_WORKERS = 0 if (not CUDA or IS_WIN) else 20
+NUM_OF_WORKERS = 20
 
 #  DATA SET
 WINDOW_TYPE = "hamming"
@@ -29,11 +29,11 @@ WINDOW_STRIDE = .01
 
 
 # TRAIN ROUTINE
-EPOCHS = 1
-LEARNING_RATE = 0.001
-MOMENTUM = 0.9
-OPTIMIZER = "adam"
-DROPOUT = 0.3
+EPOCHS = [20, 30, 50, 100]
+LEARNING_RATE = [0.001, 0.002, 0.005]
+MOMENTUM = [0.1, 0.5, 0.9]
+OPTIMIZER = ["adam", "sgd"]
+DROPOUT = [0.1, 0.3, 0.4]
 
 loader_params = {
     "batch_size": BATCH_SIZE,
