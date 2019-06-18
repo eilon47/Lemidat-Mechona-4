@@ -4,7 +4,7 @@ import numpy as np
 import copy
 import torch
 from gcommand_loader import GCommandLoader, GCommandTestLoader
-from model import LeNet
+from model import NNModel
 import torch.optim as optim
 
 
@@ -37,7 +37,7 @@ def load_all(train, train_param, valid, valid_params, test, test_params):
 
 
 def get_model_and_optimizer(optimizer_type, lr, momentum, cuda):
-    model = LeNet(in1=1, out1=32, in2=32, out2=32, kernel_size1=5, kernel_size2=7)
+    model = NNModel(in1=1, out1=32, in2=32, out2=32, kernel_size1=5, kernel_size2=7)
     if cuda:
         model = torch.nn.DataParallel(model).cuda()
     if optimizer_type.lower() == 'adam':
