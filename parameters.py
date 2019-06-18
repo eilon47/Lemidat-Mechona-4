@@ -33,7 +33,6 @@ EPOCHS = [20, 30, 50, 100]
 LEARNING_RATE = [0.001, 0.002, 0.005]
 MOMENTUM = [0.1, 0.5, 0.9]
 OPTIMIZER = ["adam", "sgd"]
-DROPOUT = [0.1, 0.3, 0.4]
 
 loader_params = {
     "batch_size": BATCH_SIZE,
