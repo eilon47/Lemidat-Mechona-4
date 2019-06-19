@@ -65,6 +65,7 @@ def main(epochs, lr, optimizer, momentum):
         valid_loss, valid_acc = epoch_routine(train, valid, model, optimizer, epoch, CUDA)
         if valid_acc >= best_valid_acc:
             print("Found better model with loss {} and accuracy {}% on validation set".format(valid_loss, valid_acc))
+            best_valid_acc = valid_acc
             best_model = copy.deepcopy(model)
     fd.write("{}_{}_{}_{}_{}\n".format(best_valid_acc, epochs, lr, optimizer, momentum))
     test_routine(test, best_model, CUDA, fname="{}_{}_{}_{}_{}".format(best_valid_acc, epochs, lr, optimizer, momentum))
