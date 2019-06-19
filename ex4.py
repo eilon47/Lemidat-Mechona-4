@@ -53,9 +53,11 @@ def get_model_and_optimizer(optimizer_type, lr, momentum, cuda):
     return model, optimizer
 
 
-def main(epochs, lr, optimizer, momentum):
+def main(epochs, lr, opt, momentum):
+    print("######### Training ###########")
+    print("E={} LR={} O={} M={}".format(epochs, lr, opt, momentum))
     train, valid, test = load_all(TRAIN_PATH, [dataset_params, loader_params], VALID_PATH, [dataset_params, loader_params], TEST_PATH, [test_dataset_params, test_loader_params])
-    fd = open("{}_{}_{}_{}_output.txt".format(epochs, lr, optimizer, momentum), 'w')
+    
     model, optimizer = get_model_and_optimizer(optimizer, lr, momentum, CUDA)
     best_model = None
     best_valid_acc = 0
@@ -65,9 +67,10 @@ def main(epochs, lr, optimizer, momentum):
             print("Found better model with loss {} and accuracy {}% on validation set".format(valid_loss, valid_acc))
             best_valid_acc = valid_acc
             best_model = copy.deepcopy(model)
-    fd.write("{}_{}_{}_{}_{}\n".format(best_valid_acc, epochs, lr, optimizer, momentum))
-    test_routine(test, best_model, CUDA, fname="{}_{}_{}_{}_{}".format(best_valid_acc, epochs, lr, optimizer, momentum))
+    fd = open("{}_{}_{}_{}_{}\n".format(best_valid_acc, epochs, lr, opt, momentum), 'w')
+    fd.write("{}\n{}\n{}\n{}\n{}\n".format(best_valid_acc, epochs, lr, opt, momentum))
     fd.close()
+    test_routine(test, best_model, CUDA, fname="{}_{}_{}_{}_{}_y".format(best_valid_acc, epochs, lr, opt, momentum))
 
 
 if __name__ == '__main__':
