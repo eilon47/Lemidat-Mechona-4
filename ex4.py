@@ -67,10 +67,10 @@ def main(epochs, lr, opt, momentum):
             print("Found better model with loss {} and accuracy {}% on validation set".format(valid_loss, valid_acc))
             best_valid_acc = valid_acc
             best_model = copy.deepcopy(model)
-    fd = open("{}_{}_{}_{}_{}\n".format(best_valid_acc, epochs, lr, opt, momentum), 'w')
+    fd = open("results/{}_{}_{}_{}_{}\n".format(best_valid_acc, epochs, lr, opt, momentum), 'w')
     fd.write("{}\n{}\n{}\n{}\n{}\n".format(best_valid_acc, epochs, lr, opt, momentum))
     fd.close()
-    test_routine(test, best_model, CUDA, fname="{}_{}_{}_{}_{}_y".format(best_valid_acc, epochs, lr, opt, momentum))
+    test_routine(test, best_model, CUDA, fname="results/{}_{}_{}_{}_{}_y".format(best_valid_acc, epochs, lr, opt, momentum))
 
 
 if __name__ == '__main__':
@@ -80,6 +80,12 @@ if __name__ == '__main__':
         opt = sys.argv[3]
         mom = float(sys.argv[4])
         main(epochs, lr, opt, mom)
+    elif len(sys.argv) == 2:
+        e = int(sys.argv[1])
+        for o in OPTIMIZER:
+            for l in LEARNING_RATE:
+                for m in MOMENTUM:
+                    main(e,l,o,m)
     else:
         for e in EPOCHS:
             for o in OPTIMIZER:
