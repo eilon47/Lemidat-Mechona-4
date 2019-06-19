@@ -75,7 +75,7 @@ def validate_routine(loader, model, epoch ,cuda):
 
     test_loss /= total_examples
     print("*************  Done  **************")
-    return test_loss, float("{:.0f}".format(100.0 * correct / total_examples))
+    return test_loss, float(100.0 * correct / total_examples)
 
 
 def test_routine(loader, model, cuda, fname="test_y"):
