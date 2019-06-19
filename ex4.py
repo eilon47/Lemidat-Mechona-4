@@ -6,6 +6,7 @@ import torch
 from gcommand_loader import GCommandLoader, GCommandTestLoader
 from model import NNModel
 import torch.optim as optim
+import sys
 from google.colab import files
 
 
@@ -54,31 +55,38 @@ def get_model_and_optimizer(optimizer_type, lr, momentum, cuda):
     return model, optimizer
 
 
-def main():
+def main(epochs, lr, optimizer, momentum):
     train, valid, test = load_all(TRAIN_PATH, [dataset_params, loader_params], VALID_PATH, [dataset_params, loader_params], TEST_PATH, [test_dataset_params, test_loader_params])
-    fd = open("output.txt", 'w')
-    for E in EPOCHS:
-        for LR in LEARNING_RATE:
-            for O in OPTIMIZER:
-                for M in MOMENTUM:
-                    model, optimizer = get_model_and_optimizer(O, LR, M, CUDA)
-                    best_model = None
-                    best_valid_loss = np.inf
-                    best_valid_acc = - np.inf
-                    for epoch in range(E):
-                        valid_loss, valid_acc = epoch_routine(train, valid, model, optimizer, epoch, CUDA)
-                        if best_valid_loss >= valid_loss and valid_acc >= best_valid_acc:
-                            print("Found better model with loss {} and accuracy {}% on validation set".format(valid_loss, valid_acc))
-                            best_model = copy.deepcopy(model)
-                    fd.write("{}_{}_{}_{}_{}\n".format(best_valid_acc, E, LR, O, M))
-                    test_routine(test, best_model, CUDA, fname="{}_{}_{}_{}_{}".format(best_valid_acc, E, LR, O, M))
-                    files.download("{}_{}_{}_{}_{}".format(best_valid_acc, E, LR, O, M))
+    fd = open("{}_{}_{}_{}_output.txt".format(epochs, lr, optimizer, momentum), 'w')
+    model, optimizer = get_model_and_optimizer(optimizer, lr, momentum, CUDA)
+    best_model = None
+    best_valid_loss = np.inf
+    best_valid_acc = - np.inf
+    for epoch in range(epochs):
+        valid_loss, valid_acc = epoch_routine(train, valid, model, optimizer, epoch, CUDA)
+        if best_valid_loss >= valid_loss and valid_acc >= best_valid_acc:
+            print("Found better model with loss {} and accuracy {}% on validation set".format(valid_loss, valid_acc))
+            best_model = copy.deepcopy(model)
+    fd.write("{}_{}_{}_{}_{}\n".format(best_valid_acc, epochs, lr, optimizer, momentum))
+    test_routine(test, best_model, CUDA, fname="{}_{}_{}_{}_{}".format(best_valid_acc, epochs, lr, optimizer, momentum))
+    files.download("{}_{}_{}_{}_{}".format(best_valid_acc, epochs, lr, optimizer, momentum))
     fd.close()
-    files.download("output.txt")
+    files.download("{}_{}_{}_{}_output.txt")
 
 
 if __name__ == '__main__':
-    main()
+    if(len(sys.argv) == 5):
+        epochs = int(sys.argv[1])
+        lr = float(sys.argv[2])
+        opt = sys.argv[3]
+        mom = float(sys.argv[4])
+        main(epochs, lr, opt, mom)
+    else:
+        for e in EPOCHS:
+            for o in OPTIMIZER:
+                for l in LEARNING_RATE:
+                    for m in MOMENTUM:
+                        main(e,o,l,m)
 
 
 
