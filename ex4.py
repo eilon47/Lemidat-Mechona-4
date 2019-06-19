@@ -58,7 +58,7 @@ def main(epochs, lr, opt, momentum):
     print("E={} LR={} O={} M={}".format(epochs, lr, opt, momentum))
     train, valid, test = load_all(TRAIN_PATH, [dataset_params, loader_params], VALID_PATH, [dataset_params, loader_params], TEST_PATH, [test_dataset_params, test_loader_params])
     
-    model, optimizer = get_model_and_optimizer(optimizer, lr, momentum, CUDA)
+    model, optimizer = get_model_and_optimizer(opt, lr, momentum, CUDA)
     best_model = None
     best_valid_acc = 0
     for epoch in range(epochs):
