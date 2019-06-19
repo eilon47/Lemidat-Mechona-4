@@ -82,7 +82,7 @@ if __name__ == '__main__':
             for o in OPTIMIZER:
                 for l in LEARNING_RATE:
                     for m in MOMENTUM:
-                        main(e,o,l,m)
+                        main(e,l,o,m)
 
 
 
