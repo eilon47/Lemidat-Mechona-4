@@ -60,11 +60,10 @@ def main(epochs, lr, optimizer, momentum):
     fd = open("{}_{}_{}_{}_output.txt".format(epochs, lr, optimizer, momentum), 'w')
     model, optimizer = get_model_and_optimizer(optimizer, lr, momentum, CUDA)
     best_model = None
-    best_valid_loss = np.inf
-    best_valid_acc = - np.inf
+    best_valid_acc = 0
     for epoch in range(epochs):
         valid_loss, valid_acc = epoch_routine(train, valid, model, optimizer, epoch, CUDA)
-        if best_valid_loss >= valid_loss and valid_acc >= best_valid_acc:
+        if valid_acc >= best_valid_acc:
             print("Found better model with loss {} and accuracy {}% on validation set".format(valid_loss, valid_acc))
             best_model = copy.deepcopy(model)
     fd.write("{}_{}_{}_{}_{}\n".format(best_valid_acc, epochs, lr, optimizer, momentum))
