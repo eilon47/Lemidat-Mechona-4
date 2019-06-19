@@ -6,7 +6,7 @@ import torch
 IS_WIN = platform.system().lower() == "windows"
 
 #  FILES
-BASEDIR = "samples_data"
+BASEDIR = "data"
 TRAIN_PATH = os.path.join(".", BASEDIR, "train")
 VALID_PATH = os.path.join(".", BASEDIR, "valid")
 TEST_PATH = os.path.join(".", BASEDIR, "test")
