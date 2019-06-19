@@ -1,13 +1,11 @@
 from parameters import *
 from routines import epoch_routine, test_routine
-import numpy as np
 import copy
 import torch
 from gcommand_loader import GCommandLoader, GCommandTestLoader
 from model import NNModel
 import torch.optim as optim
 import sys
-from google.colab import files
 
 
 current_dropout = 0.3
@@ -69,9 +67,7 @@ def main(epochs, lr, optimizer, momentum):
             best_model = copy.deepcopy(model)
     fd.write("{}_{}_{}_{}_{}\n".format(best_valid_acc, epochs, lr, optimizer, momentum))
     test_routine(test, best_model, CUDA, fname="{}_{}_{}_{}_{}".format(best_valid_acc, epochs, lr, optimizer, momentum))
-    files.download("{}_{}_{}_{}_{}".format(best_valid_acc, epochs, lr, optimizer, momentum))
     fd.close()
-    files.download("{}_{}_{}_{}_output.txt")
 
 
 if __name__ == '__main__':
